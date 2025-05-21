@@ -1,4 +1,5 @@
 const Book = require('../models/bookModel');
+const axios = require('axios');
 
 exports.createBook = async (req, res) => {
   const { title, author, description } = req.body;
@@ -37,4 +38,20 @@ exports.getBookById = async (req, res) => {
   }
 };
 
+//Fetch user details from user service
+exports.getUserProfile = async (token) => {
+  try {
+    const response = await axios.get('http://localhost:5001/api/user/profile', {
+    
+      headers: {
+        Authorization: token,
+      },
+    });
+
+    return response.data.user;  
+  } catch (error) {
+    console.error('Error fetching user profile:', error.response?.data || error.message);
+    throw new Error('Failed to fetch user profile');
+  }
+};
 

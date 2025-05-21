@@ -1,4 +1,6 @@
 const User = require('../model/userModel');
+const axios = require('axios');
+
 
 exports.getProfile = async (req, res) => {
   try {
@@ -28,11 +30,12 @@ exports.updateProfile = async (req, res) => {
   }
 };
 
+//Fetch books detail using axios
 exports.getMyBooks = async (req, res) => {
   try {
     const token = req.headers.authorization;
-
-    const response = await axios.get('http://localhost:5002/api/books/create', {
+    console.log("Received Token in user-service:", token); 
+    const response = await axios.get('http://localhost:5002/api/books/getBooks', {
       headers: {
         Authorization: token,
       },
@@ -40,7 +43,32 @@ exports.getMyBooks = async (req, res) => {
 
     res.json(response.data);
   } catch (error) {
-    console.error('Error fetching books from book-service:', error.message);
-    res.status(500).json({ message: 'Failed to fetch books' });
+    console.error('Error fetching books from book-service:', error.response?.data || error.message);
+    res.status(error.response?.status || 500).json({ message: 'Failed to fetch books' });
   }
 };
+
+exports.registerBook = async (req, res) => {
+  try {
+    const token = req.headers.authorization;
+    console.log("Received Token for book creation:", token); 
+
+    const { title, author, description } = req.body;
+
+    const response = await axios.post(
+      'http://localhost:5002/api/books/create',
+      { title, author, description },
+      {
+        headers: {
+          Authorization: token,
+        },
+      }
+    );
+
+    res.status(response.status).json(response.data);
+  } catch (error) {
+    console.error('Error creating book via book-service:', error.response?.data || error.message);
+    res.status(error.response?.status || 500).json({ message: 'Failed to create book' });
+  }
+};
+
