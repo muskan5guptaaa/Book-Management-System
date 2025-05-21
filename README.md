@@ -4,7 +4,7 @@ This is a microservices-based project for managing user authentication, profiles
 🧩 Services Overview
 1. 🔐 Auth Service (auth-service)
 Handles authentication (register, login) and token generation.
-
+``
 Endpoints:
 
 POST /api/auth/register – Register a new user
@@ -12,7 +12,7 @@ Body: { "email": "user@example.com", "password": "123456" }
 
 POST /api/auth/login – Login user and receive JWT
 Body: { "email": "user@example.com", "password": "123456" }
-
+``
 2. 👤 User Service (user-service)
 Handles retrieving and updating user profile details.
 
@@ -24,16 +24,16 @@ Headers: Authorization: Bearer <JWT_TOKEN>
 PUT /api/users/profile – Update user profile
 Headers: Authorization: Bearer <JWT_TOKEN>
 Body: { "name": "John Doe", "email": "john@example.com" }
-
+``
 3. 📚 Book Service (book-service)
 Allows users to create and view their books.
-
+``
 Endpoints:
-
+```
 POST /api/books/create – Create a book
 Headers: Authorization: Bearer <JWT_TOKEN>
 Body: { "title": "Book Title", "author": "Author Name", "description": "Details" }
-
+```
 GET /api/books/getBooks – Get all books of the logged-in user
 Headers: Authorization: Bearer <JWT_TOKEN>
 
