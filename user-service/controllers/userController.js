@@ -28,3 +28,19 @@ exports.updateProfile = async (req, res) => {
   }
 };
 
+exports.getMyBooks = async (req, res) => {
+  try {
+    const token = req.headers.authorization;
+
+    const response = await axios.get('http://localhost:5002/api/books/create', {
+      headers: {
+        Authorization: token,
+      },
+    });
+
+    res.json(response.data);
+  } catch (error) {
+    console.error('Error fetching books from book-service:', error.message);
+    res.status(500).json({ message: 'Failed to fetch books' });
+  }
+};
