@@ -39,16 +39,16 @@ exports.getBookById = async (req, res) => {
 };
 
 //Fetch user details from user service
-exports.getUserProfile = async (token) => {
+exports.getUserProfile = async (req,res) => {
   try {
-    const response = await axios.get('http://localhost:5001/api/user/profile', {
-    
+            const token = req.headers.authorization;
+            console.log("Received Token in user-service:", token); 
+            const response = await axios.get('http://localhost:5001/api/user/profile', {
       headers: {
         Authorization: token,
       },
     });
-
-    return response.data.user;  
+    res.json(response.data);
   } catch (error) {
     console.error('Error fetching user profile:', error.response?.data || error.message);
     throw new Error('Failed to fetch user profile');
